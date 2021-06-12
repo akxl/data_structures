@@ -15,6 +15,12 @@ void push(struct array_list_int * self, int new_value) {
     if (current_idx < self->size - 1) {
         self->values[current_idx] = new_value;
         self->used_capacity = current_idx + 1;
+    } else {
+        int new_size = self->size + 10;
+        self->values = (int *) realloc(self->values, new_size * sizeof(int));
+        self->size = new_size;
+        self->values[current_idx] = new_value;
+        self->used_capacity = current_idx + 1;
     }
 }
 
@@ -44,9 +50,15 @@ struct array_list_int * initialise() {
 int main() {
     
     struct array_list_int * aaa = initialise();
-    aaa->push(aaa, 69);
-    printf("%d", aaa->values[0]);
-    printf("%d", aaa->pop(aaa));
+
+    unsigned int i;
+    for(i = 0; i < 30; i++) {
+        aaa->push(aaa, i);
+    }
+
+    for(i = 0; i < 30; i++) {
+        printf("%d\n", aaa->values[i]);
+    }
 
     free(aaa->values);
     free(aaa);
